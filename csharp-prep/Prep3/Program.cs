@@ -8,7 +8,7 @@ class Program
         Random random = new Random();
         int valueMax = 0;
 
-        Console.WriteLine("This is the \"guess a number\" game.");
+        Console.WriteLine("This is the \"guess a number\" game. ");
         Console.WriteLine("You try to guess a random number in the smallest number of attempts");
 
         while (valueMax <= 1)
