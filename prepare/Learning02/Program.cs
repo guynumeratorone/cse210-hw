@@ -16,12 +16,18 @@ class Program
         job2._startYear = 2022;
         job2._endYear = 2023;
 
+        Job job3 = new Job(); // class wont work unless its called to be displayed asa demoed below
+        job3._jobTitle = "sdads";
+        job3._company = "asdasfs";
+        job3._startYear = 2023;
+        job3._endYear = 2024;
+
         Resume myResume = new Resume();
         myResume._name = "Allison Rose";
 
         myResume._jobs.Add(job1);
         myResume._jobs.Add(job2);
-
+        myResume._jobs.Add(job3); // needs to call the class / instance
         myResume.Display();
     }
 }
