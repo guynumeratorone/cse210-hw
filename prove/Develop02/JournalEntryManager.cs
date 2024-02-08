@@ -2,7 +2,7 @@ public class JournalEntryManager
 {
     public static void SaveEntriesToFile(List<List<string>> allEntries)
     {
-        // Get the current user's desktop folder
+        // Get the current users desktop folder
         string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
         // Prompt the user for the file name
@@ -14,10 +14,11 @@ public class JournalEntryManager
 
         try
         {
-            // Write all entries to the file
+            // Writes all entries to the file
             File.WriteAllLines(filePath, allEntries.SelectMany(entries => entries));
             Console.WriteLine($"Entries saved successfully to {filePath}");
         }
+        // catches errors for useres understanding
         catch (Exception ex)
         {
             Console.WriteLine($"Error saving entries: {ex.Message}");
