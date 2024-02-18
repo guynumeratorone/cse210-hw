@@ -51,7 +51,7 @@ public static void WriteEntry()
     }
 }
 
-// Displayes for to the user when called for via the menu.
+// Displays for to the user when called for via the menu.
     public static List<List<string>> GetEntries()
     {
         return entries;
