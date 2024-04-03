@@ -18,35 +18,52 @@ public class Record
         }
     }
 
-    private static void RecordProgress()
+private static void RecordProgress()
+{
+    Console.Write("Enter the number of the goal to record progress: ");
+    if (int.TryParse(Console.ReadLine(), out int selectedGoalIndex) && selectedGoalIndex > 0 && selectedGoalIndex <= List.GetGoals().Count)
     {
-        Console.Write("Enter the number of the goal to record progress: ");
-        if (int.TryParse(Console.ReadLine(), out int selectedGoalIndex) && selectedGoalIndex > 0 && selectedGoalIndex <= List.GetGoals().Count)
+        Goal selectedGoal = List.GetGoals()[selectedGoalIndex - 1];
+
+        if (selectedGoal is ChecklistGoal checklistGoal)
         {
-            Goal selectedGoal = List.GetGoals()[selectedGoalIndex - 1];
-
-            // Check if the goal is already completed
-            if (!selectedGoal.IsCompleted)
+            if (checklistGoal.CompletedCount < checklistGoal.TargetCount)
             {
-                // Get points from the selected goal
-                int pointsEarned = selectedGoal.Points;
+                // Increment the completed count of the checklist goal
+                checklistGoal.CompletedCount++;
 
-                // Mark the goal as completed
-                selectedGoal.IsCompleted = true;
+                // Add points for each completion
+                Program.AddPoints(checklistGoal.Points);
 
-                // Add points to the total
-                Program.AddPoints(pointsEarned);
+                // Check if all iterations are completed
+                if (checklistGoal.CompletedCount == checklistGoal.TargetCount)
+                {
+                    // Mark the goal as completed
+                    selectedGoal.IsCompleted = true;
 
-                Console.WriteLine($"Recorded {pointsEarned} points for {selectedGoal.Name}. Goal marked as completed.");
+                    // Add bonus points for completing all iterations
+                    Program.AddPoints(checklistGoal.BonusPoints);
+
+                    Console.WriteLine($"Recorded completion of '{selectedGoal.Name}'. Goal marked as completed. Earned {checklistGoal.Points} points for completion and {checklistGoal.BonusPoints} bonus points.");
+                }
+                else
+                {
+                    Console.WriteLine($"Progress recorded for '{selectedGoal.Name}'. {checklistGoal.CompletedCount}/{checklistGoal.TargetCount} iterations completed. Earned {checklistGoal.Points} points for completion.");
+                }
             }
             else
             {
-                Console.WriteLine($"Goal '{selectedGoal.Name}' is already marked as completed.");
+                Console.WriteLine($"Goal '{selectedGoal.Name}' is already completed.");
             }
         }
         else
         {
-            Console.WriteLine("Invalid goal selection.");
+            Console.WriteLine($"Goal '{selectedGoal.Name}' is not a ChecklistGoal and cannot have progress recorded.");
         }
     }
+    else
+    {
+        Console.WriteLine("Invalid goal selection.");
+    }
+}
 }

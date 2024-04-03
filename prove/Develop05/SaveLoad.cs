@@ -57,12 +57,12 @@ public static class SaveLoad
         return loadedGoals;
     }
 
-    private static string GoalToString(Goal goal)
+    public static string GoalToString(Goal goal)
     {
         if (goal is ChecklistGoal checklistGoal)
         {
             return $"ChecklistGoal:{checklistGoal.Name},{checklistGoal.Description},{checklistGoal.Points}," +
-                   $"{checklistGoal.BonusPoints},{checklistGoal.TargetCount},{checklistGoal.CompletedCount}";
+                   $"{checklistGoal.IsCompleted},{checklistGoal.BonusPoints},{checklistGoal.TargetCount},{checklistGoal.CompletedCount}";
         }
         else
         {
@@ -76,13 +76,16 @@ public static class SaveLoad
         if (parts.Length == 2)
         {
             string[] data = parts[1].Split(',');
-            if (data.Length >= 4)
+            if (data.Length >= 7)
             {
                 string type = parts[0];
                 string name = data[0];
                 string description = data[1];
                 int points = int.Parse(data[2]);
                 bool isCompleted = bool.Parse(data[3]);
+                int bonusPoints = int.Parse(data[4]);
+                int targetCount = int.Parse(data[5]);
+                int completedCount = int.Parse(data[6]);
 
                 switch (type)
                 {
@@ -91,13 +94,8 @@ public static class SaveLoad
                     case "EternalGoal":
                         return new EternalGoal { Name = name, Description = description, Points = points, IsCompleted = isCompleted };
                     case "ChecklistGoal":
-                        if (data.Length >= 6 && int.TryParse(data[4], out int targetCount) && int.TryParse(data[5], out int completedCount))
-                        {
-                            int bonusPoints = int.Parse(data[3]);
-                            return new ChecklistGoal { Name = name, Description = description, Points = points, IsCompleted = isCompleted, 
-                                BonusPoints = bonusPoints, TargetCount = targetCount, CompletedCount = completedCount };
-                        }
-                        break;
+                        return new ChecklistGoal { Name = name, Description = description, Points = points, IsCompleted = isCompleted,
+                            BonusPoints = bonusPoints, TargetCount = targetCount, CompletedCount = completedCount };
                 }
             }
         }
